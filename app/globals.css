@@ -1,0 +1,128 @@
+:root {
+  color-scheme: light;
+  --bg: #f7f5f1;
+  --fg: #1a1a1a;
+  --muted: #5c5c5c;
+  --line: #d9d4cb;
+  --accent: #0b6e4f;
+  --card: #fffefb;
+  font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua',
+    Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #e8efe9 0%, transparent 55%),
+    linear-gradient(180deg, #fbf9f4 0%, var(--bg) 40%, #efebe3 100%);
+  color: var(--fg);
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.site-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.site-header a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-main {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 4vw, 2.35rem);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0 0 0.5rem;
+}
+
+.lede {
+  color: var(--muted);
+  margin: 0 0 1.75rem;
+  font-size: 1.05rem;
+}
+
+.item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.item-list a {
+  display: block;
+  padding: 0.9rem 1rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 120ms ease, transform 120ms ease;
+}
+
+.item-list a:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.item-list .meta {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.error {
+  padding: 1rem;
+  border: 1px solid #c45c4a;
+  background: #fff5f2;
+  color: #6b2a1f;
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+}
+
+.fields {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.field dt {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 0;
+}
+
+.field dd {
+  margin: 0.2rem 0 0;
+  padding: 0.65rem 0.75rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
