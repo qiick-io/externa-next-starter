@@ -1,15 +1,62 @@
 import Link from 'next/link';
-import { getItem, itemLabel } from '@/lib/externa';
+import { SetupPanel } from '@/app/setup-panel';
+import {
+  collectionReadable,
+  configuredCollectionSlug,
+  getItem,
+  isMissingCollectionError,
+  itemLabel,
+  listCollections,
+  pingOpenApi,
+  resolveCollection,
+} from '@/lib/externa';
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
+/**
+ * Slugs of collections currently readable by the Public API actor.
+ *
+ * @returns Slug list, or `[]` when the collections call fails
+ */
+async function availableSlugs(): Promise<string[]> {
+  try {
+    return (await listCollections()).map((c) => c.slug);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Item detail for the resolved collection, or setup / not-found / error UI.
+ *
+ * @param props.params - Route params promise; `id` is the item id
+ * @returns Item fields view, {@link SetupPanel}, or an error message
+ */
 export default async function ItemPage({ params }: Props) {
   const { id } = await params;
+  let activeSlug: string | null = null;
 
   try {
-    const item = await getItem(id);
+    const resolved = await resolveCollection();
+    if (!resolved) {
+      const [connection, slugs] = await Promise.all([
+        pingOpenApi(),
+        availableSlugs(),
+      ]);
+      return (
+        <>
+          <Link className="back" href="/">
+            ← All items
+          </Link>
+          <SetupPanel connection={connection} availableSlugs={slugs} />
+        </>
+      );
+    }
+
+    activeSlug = resolved.slug;
+    const item = await getItem(resolved.slug, id);
     const entries = Object.entries(item.data ?? {});
 
     return (
@@ -19,7 +66,8 @@ export default async function ItemPage({ params }: Props) {
         </Link>
         <h1>{itemLabel(item)}</h1>
         <p className="lede">
-          Item #{item.id} · updated {new Date(item.updated_at).toLocaleString()}
+          Item #{item.id} · <code>{resolved.slug}</code> · updated{' '}
+          {new Date(item.updated_at).toLocaleString()}
         </p>
         <dl className="fields">
           {entries.length === 0 ? (
@@ -43,6 +91,42 @@ export default async function ItemPage({ params }: Props) {
       </>
     );
   } catch (error) {
+    if (isMissingCollectionError(error) && activeSlug) {
+      const readable = await collectionReadable(activeSlug).catch(() => false);
+      if (readable) {
+        return (
+          <>
+            <Link className="back" href="/">
+              ← All items
+            </Link>
+            <h1>Item #{id}</h1>
+            <p className="lede">
+              No item with this id in <code>{activeSlug}</code>.
+            </p>
+          </>
+        );
+      }
+    }
+
+    if (isMissingCollectionError(error)) {
+      const [connection, slugs] = await Promise.all([
+        pingOpenApi(),
+        availableSlugs(),
+      ]);
+      return (
+        <>
+          <Link className="back" href="/">
+            ← All items
+          </Link>
+          <SetupPanel
+            requestedSlug={configuredCollectionSlug() ?? activeSlug}
+            connection={connection}
+            availableSlugs={slugs}
+          />
+        </>
+      );
+    }
+
     const message = error instanceof Error ? error.message : String(error);
     return (
       <>

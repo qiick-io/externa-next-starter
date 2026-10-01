@@ -99,6 +99,40 @@ h1 {
   color: #6b2a1f;
 }
 
+.setup {
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--fg);
+}
+
+.setup ol {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+}
+
+.setup li {
+  margin-bottom: 0.55rem;
+  color: var(--muted);
+}
+
+.setup p {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+}
+
+.setup p:last-child {
+  margin-bottom: 0;
+}
+
+.setup-ok {
+  color: var(--accent) !important;
+}
+
+.setup-bad {
+  color: #6b2a1f !important;
+}
+
 .back {
   display: inline-block;
   margin-bottom: 1.25rem;
