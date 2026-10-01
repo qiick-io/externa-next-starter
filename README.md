@@ -7,7 +7,7 @@ Not a marketing theme. No Kitchen Sink. Server-side fetches only — the API key
 ## Prerequisites
 
 - Node.js 20+ (24 recommended)
-- A running Externa install with at least one collection (e.g. `posts`) readable by the `public` role **or** an API key role
+- A running Externa install (fresh installs need no seeded collection)
 
 ## Setup
 
@@ -27,18 +27,20 @@ Open [http://localhost:3002](http://localhost:3002).
 |----------|----------|-------|
 | `EXTERNA_API_URL` | yes | Origin only, e.g. `http://externa-core.test` (no trailing slash) |
 | `EXTERNA_API_KEY` | no | `ek_…` Bearer secret. Omit to use the `public` role |
-| `EXTERNA_COLLECTION` | no | Collection slug (default `posts`) |
+| `EXTERNA_COLLECTION` | no | Collection slug. **Leave empty** to auto-discover the first readable collection via `GET /api/v1/collections` |
 
-Grant **Read** on that collection under Roles → Collection access ([docs](https://docs.externa.qiick.io/docs/public-cms-api#quick-start-typical-website-read)).
+Grant **Read** on at least one collection under Roles → Collection access ([docs](https://docs.externa.qiick.io/docs/public-cms-api#quick-start-typical-website-read)).
+
+With an empty `EXTERNA_COLLECTION` and no readable collections, the home page shows a setup panel (not a raw 404 dump) and pings always-public `GET /api/v1/openapi.json` to confirm the API is reachable.
 
 ## Routes
 
 | Path | Source |
 |------|--------|
-| `/` | `GET /api/v1/collections/{slug}/items` |
-| `/items/[id]` | `GET /api/v1/collections/{slug}/items/{id}` |
+| `/` | resolve collection → `GET /api/v1/collections/{slug}/items` |
+| `/items/[id]` | same resolve → `GET /api/v1/collections/{slug}/items/{id}` |
 
-Client code lives in `lib/externa.ts`.
+Client lives in `lib/externa/` (`types`, `client`, `collections`, `openapi` — import from `@/lib/externa`).
 
 ## GraphQL (optional)
 
@@ -48,6 +50,15 @@ Same auth and Collection access apply at `/api/graphql`. This starter uses REST 
 
 - Guide: [Headless starter](https://docs.externa.qiick.io/docs/headless-starter)
 - [Public CMS API](https://docs.externa.qiick.io/docs/public-cms-api) · [Client types / OpenAPI](https://docs.externa.qiick.io/docs/public-cms-api-types) · [Bruno collection](https://github.com/qiick-io/externa-bruno)
+
+## Branches
+
+| Branch | Role |
+|--------|------|
+| `develop` | Integration branch — open feature PRs here |
+| `main` | Stable releases — merge via `release:` PRs from `develop` |
+
+Default clone branch stays `main`. Day-to-day work targets `develop`.
 
 ## License
 
