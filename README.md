@@ -40,7 +40,7 @@ With an empty `EXTERNA_COLLECTION` and no readable collections, the home page sh
 | `/` | resolve collection → `GET /api/v1/collections/{slug}/items` |
 | `/items/[id]` | same resolve → `GET /api/v1/collections/{slug}/items/{id}` |
 
-Discovery helpers live in `lib/externa.ts` (`listCollections`, `resolveCollection`, `pingOpenApi`).
+Client lives in `lib/externa/` (`types`, `client`, `collections`, `openapi` — import from `@/lib/externa`).
 
 ## GraphQL (optional)
 
