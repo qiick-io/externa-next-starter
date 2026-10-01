@@ -1,23 +1,62 @@
 import Link from 'next/link';
-import { collectionSlug, itemLabel, listItems } from '@/lib/externa';
+import { SetupPanel } from '@/app/setup-panel';
+import {
+  configuredCollectionSlug,
+  isMissingCollectionError,
+  itemLabel,
+  listCollections,
+  listItems,
+  pingOpenApi,
+  resolveCollection,
+} from '@/lib/externa';
+
+async function loadAvailableSlugs(): Promise<string[]> {
+  try {
+    const collections = await listCollections();
+    return collections.map((c) => c.slug);
+  } catch {
+    return [];
+  }
+}
 
 export default async function HomePage() {
-  const slug = collectionSlug();
-
   try {
-    const { data, meta } = await listItems();
+    const resolved = await resolveCollection();
+
+    if (!resolved) {
+      const [connection, availableSlugs] = await Promise.all([
+        pingOpenApi(),
+        loadAvailableSlugs(),
+      ]);
+      return (
+        <SetupPanel connection={connection} availableSlugs={availableSlugs} />
+      );
+    }
+
+    const { data, meta } = await listItems(resolved.slug);
 
     return (
       <>
-        <h1>{slug}</h1>
+        <h1>{resolved.name ?? resolved.slug}</h1>
         <p className="lede">
           {meta.total} item{meta.total === 1 ? '' : 's'} from Externa Public CMS
-          API.
+          API
+          {resolved.source === 'discovered' ? (
+            <>
+              {' '}
+              · auto-discovered <code>{resolved.slug}</code>
+            </>
+          ) : (
+            <>
+              {' '}
+              · <code>{resolved.slug}</code>
+            </>
+          )}
+          .
         </p>
         {data.length === 0 ? (
           <p className="lede">
-            No items yet. Create some in Externa admin, or grant <code>read</code>{' '}
-            on collection <code>{slug}</code> for the public role / API key.
+            Collection is readable but empty. Create items in Externa admin.
           </p>
         ) : (
           <ul className="item-list">
@@ -34,17 +73,36 @@ export default async function HomePage() {
       </>
     );
   } catch (error) {
+    if (isMissingCollectionError(error)) {
+      const requested = configuredCollectionSlug();
+      const [connection, availableSlugs] = await Promise.all([
+        pingOpenApi(),
+        loadAvailableSlugs(),
+      ]);
+      return (
+        <SetupPanel
+          requestedSlug={requested}
+          connection={connection}
+          availableSlugs={availableSlugs}
+        />
+      );
+    }
+
     const message = error instanceof Error ? error.message : String(error);
+    const connection = await pingOpenApi();
     return (
       <>
-        <h1>{slug}</h1>
-        <p className="lede">Could not load items from Externa.</p>
+        <h1>Could not load Externa</h1>
+        <p className="lede">
+          Check <code>EXTERNA_API_URL</code> and network access to the Public
+          CMS API.
+        </p>
         <div className="error">
           <p>{message}</p>
-          <p>
-            Check <code>EXTERNA_API_URL</code>, collection slug, and that the{' '}
-            <code>public</code> role (or your API key role) has <strong>Read</strong>{' '}
-            on this collection.
+          <p className={connection.ok ? 'setup-ok' : 'setup-bad'}>
+            {connection.ok
+              ? 'OpenAPI ping succeeded — API is up; this error is likely auth or collection access.'
+              : `OpenAPI ping failed: ${connection.message}`}
           </p>
         </div>
       </>

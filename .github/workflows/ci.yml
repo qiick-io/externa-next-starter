@@ -20,4 +20,5 @@ jobs:
       - run: npm run build
         env:
           EXTERNA_API_URL: http://example.test
-          EXTERNA_COLLECTION: posts
+          # Empty = auto-discover; build still succeeds (setup UI on fetch fail).
+          EXTERNA_COLLECTION:
