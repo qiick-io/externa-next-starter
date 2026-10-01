@@ -51,6 +51,15 @@ Same auth and Collection access apply at `/api/graphql`. This starter uses REST 
 - Guide: [Headless starter](https://docs.externa.qiick.io/docs/headless-starter)
 - [Public CMS API](https://docs.externa.qiick.io/docs/public-cms-api) · [Client types / OpenAPI](https://docs.externa.qiick.io/docs/public-cms-api-types) · [Bruno collection](https://github.com/qiick-io/externa-bruno)
 
+## Branches
+
+| Branch | Role |
+|--------|------|
+| `develop` | Integration branch — open feature PRs here |
+| `main` | Stable releases — merge via `release:` PRs from `develop` |
+
+Default clone branch stays `main`. Day-to-day work targets `develop`.
+
 ## License
 
 MIT (same as Externa Core).
