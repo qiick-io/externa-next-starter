@@ -4,6 +4,8 @@ import type { ConnectionProbe } from './types';
 /**
  * Always-public OpenAPI document — proves API reachability without a collection.
  * No API key required on the core route.
+ *
+ * @returns Connection probe: success metadata or a short failure message
  */
 export async function pingOpenApi(): Promise<ConnectionProbe> {
   try {

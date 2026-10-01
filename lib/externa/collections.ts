@@ -23,18 +23,32 @@ type CollectionsResponse = {
   data: CollectionSummary[];
 };
 
-/** Explicit slug from env, or `null` when unset (auto-discover). */
+/**
+ * Explicit slug from env, or `null` when unset (auto-discover).
+ *
+ * @returns Trimmed `EXTERNA_COLLECTION`, or `null` when missing/blank
+ */
 export function configuredCollectionSlug(): string | null {
   const slug = process.env.EXTERNA_COLLECTION?.trim();
   return slug ? slug : null;
 }
 
+/**
+ * List collections readable by the current actor (`public` or API key role).
+ *
+ * @returns Collection summaries from `GET /api/v1/collections`
+ */
 export async function listCollections(): Promise<CollectionSummary[]> {
   const json = await externaFetch<CollectionsResponse>('/api/v1/collections');
   return json.data;
 }
 
-/** `true` when slug exists and actor may read it. */
+/**
+ * `true` when slug exists and actor may read it.
+ *
+ * @param slug - Collection slug to probe
+ * @returns Whether `GET /api/v1/collections/{slug}` succeeds
+ */
 export async function collectionReadable(slug: string): Promise<boolean> {
   try {
     await externaFetch<{ data: CollectionSummary }>(
@@ -52,6 +66,8 @@ export async function collectionReadable(slug: string): Promise<boolean> {
 /**
  * Use `EXTERNA_COLLECTION` when set; otherwise first readable collection
  * from `GET /api/v1/collections`. Returns `null` when none are readable.
+ *
+ * @returns Resolved slug (env or discovered), or `null` if none available
  */
 export async function resolveCollection(): Promise<ResolvedCollection | null> {
   const configured = configuredCollectionSlug();
@@ -72,6 +88,14 @@ export async function resolveCollection(): Promise<ResolvedCollection | null> {
   };
 }
 
+/**
+ * Paginated items for a collection.
+ *
+ * @param slug - Collection slug
+ * @param page - 1-based page index (default `1`)
+ * @param perPage - Page size (default `15`)
+ * @returns Item list plus pagination `meta`
+ */
 export async function listItems(
   slug: string,
   page = 1,
@@ -86,6 +110,13 @@ export async function listItems(
   );
 }
 
+/**
+ * Fetch a single item by id within a collection.
+ *
+ * @param slug - Collection slug
+ * @param id - Item id
+ * @returns Item record including `data` fields
+ */
 export async function getItem(
   slug: string,
   id: string | number,
@@ -96,7 +127,12 @@ export async function getItem(
   return json.data;
 }
 
-/** Best-effort title from common field names; falls back to id. */
+/**
+ * Best-effort title from common field names; falls back to id.
+ *
+ * @param item - Collection item whose `data` may hold title-like fields
+ * @returns Display label for lists and headings
+ */
 export function itemLabel(item: CollectionItem): string {
   const data = item.data ?? {};
   for (const key of ['title', 'name', 'slug', 'label']) {
@@ -108,6 +144,12 @@ export function itemLabel(item: CollectionItem): string {
   return `Item #${item.id}`;
 }
 
+/**
+ * Detect a 404 from the Public CMS API (missing collection or item).
+ *
+ * @param error - Caught value from an Externa fetch
+ * @returns `true` when `error` is {@link ExternaHttpError} with status 404
+ */
 export function isMissingCollectionError(error: unknown): boolean {
   return error instanceof ExternaHttpError && error.status === 404;
 }

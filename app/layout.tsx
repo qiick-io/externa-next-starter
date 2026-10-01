@@ -8,6 +8,12 @@ export const metadata: Metadata = {
   description: 'Minimal headless frontend against Externa Public CMS API',
 };
 
+/**
+ * Root layout: site chrome (header + main) around every page.
+ *
+ * @param props.children - Page content rendered inside `<main>`
+ * @returns HTML shell for the starter app
+ */
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">

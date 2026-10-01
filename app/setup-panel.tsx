@@ -7,6 +7,15 @@ type SetupPanelProps = {
   connection: ConnectionProbe;
 };
 
+/**
+ * Setup guidance when no readable collection is configured or reachable.
+ *
+ * @param props.title - Panel heading (default: connect-a-collection copy)
+ * @param props.requestedSlug - Env or attempted slug that failed, if any
+ * @param props.availableSlugs - Slugs currently readable via the Public API
+ * @param props.connection - OpenAPI reachability probe result
+ * @returns Setup instructions and connection status UI
+ */
 export function SetupPanel({
   title = 'Connect a collection',
   requestedSlug,

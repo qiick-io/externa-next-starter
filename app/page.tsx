@@ -10,6 +10,11 @@ import {
   resolveCollection,
 } from '@/lib/externa';
 
+/**
+ * Slugs of collections currently readable by the Public API actor.
+ *
+ * @returns Slug list, or `[]` when the collections call fails
+ */
 async function loadAvailableSlugs(): Promise<string[]> {
   try {
     const collections = await listCollections();
@@ -19,6 +24,11 @@ async function loadAvailableSlugs(): Promise<string[]> {
   }
 }
 
+/**
+ * Home: list items for the resolved collection, or show setup / error UI.
+ *
+ * @returns Item list, {@link SetupPanel}, or a connection error panel
+ */
 export default async function HomePage() {
   try {
     const resolved = await resolveCollection();

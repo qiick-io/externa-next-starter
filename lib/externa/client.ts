@@ -4,10 +4,18 @@
  * Auth: optional `Authorization: Bearer ek_…`. Omit the key to use the `public` role.
  */
 
+/**
+ * HTTP failure from the Public CMS API, with status and request path.
+ */
 export class ExternaHttpError extends Error {
   readonly status: number;
   readonly path: string;
 
+  /**
+   * @param status - HTTP status code from the response
+   * @param path - Request path relative to the API base URL
+   * @param detail - Short human-readable error detail (never a full framework dump)
+   */
   constructor(status: number, path: string, detail: string) {
     super(`Externa ${status} ${path}${detail ? `: ${detail}` : ''}`);
     this.name = 'ExternaHttpError';
@@ -16,6 +24,12 @@ export class ExternaHttpError extends Error {
   }
 }
 
+/**
+ * Resolve the Externa API base URL from `EXTERNA_API_URL` (trailing slash stripped).
+ *
+ * @returns Absolute base URL without a trailing slash
+ * @throws {Error} When `EXTERNA_API_URL` is unset or empty
+ */
 export function baseUrl(): string {
   const url = process.env.EXTERNA_API_URL?.replace(/\/$/, '');
   if (!url) {
@@ -33,7 +47,13 @@ function headers(): HeadersInit {
   return h;
 }
 
-/** Prefer short API `message`; never dump framework exception bodies. */
+/**
+ * Prefer short API `message`; never dump framework exception bodies.
+ *
+ * @param body - Raw response body text
+ * @param status - HTTP status used when no usable message is present
+ * @returns Concise detail suitable for UI and thrown errors
+ */
 export function shortApiDetail(body: string, status: number): string {
   const trimmed = body.trim();
   if (!trimmed) {
@@ -61,6 +81,14 @@ export function shortApiDetail(body: string, status: number): string {
   return trimmed.slice(0, 120);
 }
 
+/**
+ * Authenticated JSON GET against the Public CMS API (`cache: 'no-store'`).
+ *
+ * @typeParam T - Expected JSON response shape
+ * @param path - Path beginning with `/api/v1/…`, relative to {@link baseUrl}
+ * @returns Parsed JSON body as `T`
+ * @throws {ExternaHttpError} When the response is not OK
+ */
 export async function externaFetch<T>(path: string): Promise<T> {
   const res = await fetch(`${baseUrl()}${path}`, {
     headers: headers(),

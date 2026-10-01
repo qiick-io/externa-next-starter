@@ -15,6 +15,11 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+/**
+ * Slugs of collections currently readable by the Public API actor.
+ *
+ * @returns Slug list, or `[]` when the collections call fails
+ */
 async function availableSlugs(): Promise<string[]> {
   try {
     return (await listCollections()).map((c) => c.slug);
@@ -23,6 +28,12 @@ async function availableSlugs(): Promise<string[]> {
   }
 }
 
+/**
+ * Item detail for the resolved collection, or setup / not-found / error UI.
+ *
+ * @param props.params - Route params promise; `id` is the item id
+ * @returns Item fields view, {@link SetupPanel}, or an error message
+ */
 export default async function ItemPage({ params }: Props) {
   const { id } = await params;
   let activeSlug: string | null = null;
