@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start --port 3002",
     "lint": "eslint .",
-    "self-check": "node scripts/self-check.mjs"
+    "self-check": "node scripts/self-check.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "engines": {
     "node": ">=20"

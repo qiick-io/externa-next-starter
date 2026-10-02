@@ -60,6 +60,10 @@ Same auth and Collection access apply at `/api/graphql`. This starter uses REST 
 
 Default clone branch stays `main`. Day-to-day work targets `develop`.
 
+## Conventions
+
+Official Externa starters share naming, env vars, TypeScript, CI, and update cadence — see [externa-core `docs/starters.md`](https://github.com/qiick-io/externa-core/blob/develop/docs/starters.md).
+
 ## License
 
 MIT (same as Externa Core).
