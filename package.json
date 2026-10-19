@@ -1,6 +1,6 @@
 {
   "name": "externa-next-starter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Minimal Next.js App Router starter for Externa Public CMS API",
   "scripts": {
@@ -14,7 +14,7 @@
     "node": ">=20"
   },
   "dependencies": {
-    "next": "^15.5.4",
+    "next": "^15.5.28",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
@@ -24,7 +24,10 @@
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "eslint": "^9.36.0",
-    "eslint-config-next": "^15.5.4",
+    "eslint-config-next": "^15.5.28",
     "typescript": "^5.9.2"
+  },
+  "overrides": {
+    "postcss": "8.5.31"
   }
 }
