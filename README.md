@@ -1,3 +1,11 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/assets/header-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset=".github/assets/header-light.svg">
+    <img alt="Externa: Next.js starter for Externa" src=".github/assets/header-light.svg" width="100%">
+  </picture>
+</p>
+
 # Externa Next.js starter
 
 Minimal **Next.js App Router** frontend that lists and shows collection items from the Externa [Public CMS API](https://docs.externa.qiick.io/docs/public-cms-api).
@@ -59,6 +67,10 @@ Same auth and Collection access apply at `/api/graphql`. This starter uses REST 
 | `main` | Stable releases — merge via `release:` PRs from `develop` |
 
 Default clone branch stays `main`. Day-to-day work targets `develop`.
+
+## Conventions
+
+Official Externa starters share naming, env vars, TypeScript, CI, and update cadence — see [externa-core `docs/starters.md`](https://github.com/qiick-io/externa-core/blob/develop/docs/starters.md).
 
 ## License
 
