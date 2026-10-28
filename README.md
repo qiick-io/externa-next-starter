@@ -34,7 +34,7 @@ Open [http://localhost:3002](http://localhost:3002).
 | Variable | Required | Notes |
 |----------|----------|-------|
 | `EXTERNA_API_URL` | yes | Origin only, e.g. `http://externa-core.test` (no trailing slash) |
-| `EXTERNA_API_KEY` | no | `ek_…` Bearer secret. Omit to use the `public` role |
+| `EXTERNA_API_KEY` | no | `ek_…` Bearer secret. Omit to use the `public` role. Prefer a key scoped to the starter's collections with `read_only` enabled (core 1.3.0+) — see [API abuse controls](https://docs.externa.qiick.io/docs/api-abuse-controls#api-key-scopes) |
 | `EXTERNA_COLLECTION` | no | Collection slug. **Leave empty** to auto-discover the first readable collection via `GET /api/v1/collections` |
 
 Grant **Read** on at least one collection under Roles → Collection access ([docs](https://docs.externa.qiick.io/docs/public-cms-api#quick-start-typical-website-read)).
