@@ -75,3 +75,7 @@ Official Externa starters share naming, env vars, TypeScript, CI, and update cad
 ## License
 
 MIT (same as Externa Core).
+
+## Code of Conduct
+
+Please read our [Code of Conduct](CODE_OF_CONDUCT.md).
