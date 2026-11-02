@@ -1,0 +1,39 @@
+name: Feature request
+description: Suggest an idea for this project
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement.
+
+        Before filing, please check:
+        - There's [no existing issue](https://github.com/qiick-io/externa-next-starter/issues?q=is%3Aissue) that already covers this
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem are you trying to solve? Who hits it?
+      placeholder: I'm always frustrated when…
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: A clear and concise description of what you want to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches you thought about, including workarounds.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
