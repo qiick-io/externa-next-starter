@@ -1,6 +1,6 @@
 /**
  * Shared types for Externa Public CMS API (`/api/v1`).
- * Docs: https://docs.externa.qiick.io/docs/public-cms-api
+ * Docs: https://docs.qiick.io/externa/public-cms-api
  */
 
 /**
