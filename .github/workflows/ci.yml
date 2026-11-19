@@ -18,6 +18,10 @@ jobs:
       - run: npm run self-check
       - run: npm run typecheck
       - run: npm run lint
+      # Chrome's legacy-scan, ratcheted against legacy-scan-baseline.json (no findings
+      # today). A step in this job and not a job of its own: GitHub bills per job,
+      # rounded up to the whole minute.
+      - run: npm run lint:legacy
       - run: npm run build
         env:
           EXTERNA_API_URL: http://example.test

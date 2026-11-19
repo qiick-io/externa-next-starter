@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start --port 3002",
     "lint": "eslint .",
+    "lint:legacy": "node scripts/check-legacy-web.mjs app lib scripts",
     "self-check": "node scripts/self-check.mjs",
     "typecheck": "tsc --noEmit"
   },
