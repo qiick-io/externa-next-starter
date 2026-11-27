@@ -8,6 +8,8 @@
 
 # Externa Next.js starter
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/qiick-io/externa-next-starter/badge)](https://scorecard.dev/viewer/?uri=github.com/qiick-io/externa-next-starter)
+
 Minimal **Next.js App Router** frontend that lists and shows collection items from the Externa [Public CMS API](https://docs.qiick.io/externa/public-cms-api).
 
 Not a marketing theme. No Kitchen Sink. Server-side fetches only — the API key never reaches the browser.
